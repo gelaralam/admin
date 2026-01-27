@@ -48,7 +48,7 @@ export const render = () => `
             
             <div class="form-group">
                 <label>Konten Lengkap</label>
-                <textarea class="form-control" name="content" placeholder="Ketik isi blog di sini. Setiap baris baru akan otomatis menjadi paragraf <p>..." style="min-height: 200px;" required></textarea>
+                <textarea class="form-control" name="content" placeholder="Ketik isi blog di sini..." style="min-height: 200px;" required></textarea>
             </div>
             
             <button type="submit" class="btn-primary">Publikasikan Blog</button>
