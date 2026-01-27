@@ -1,6 +1,6 @@
 import Router from './router.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Session Check
     const savedUser = localStorage.getItem('admin_user');
     if (!savedUser) {
@@ -9,6 +9,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const userData = JSON.parse(savedUser);
+
+    // Secondary Verification (Check if still authorized in admin.json)
+    try {
+        const resp = await fetch('admin.json');
+        const authorizedEmails = await resp.json();
+        if (!authorizedEmails.includes(userData.email)) {
+            localStorage.removeItem('admin_user');
+            window.location.href = 'login.html';
+            return;
+        }
+    } catch (e) {
+        console.warn('Could not verify against admin.json, relying on local session.');
+    }
     const contentArea = document.getElementById('content-area');
     const pageTitle = document.getElementById('current-page-title');
     const sidebar = document.getElementById('sidebar');
