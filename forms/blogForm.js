@@ -12,12 +12,16 @@ export const render = () => `
                 
                 <div class="form-group">
                     <label>Kategori</label>
-                    <select class="form-control" name="category">
-                        <option value="EKONOMI">EKONOMI</option>
-                        <option value="BUDAYA">BUDAYA</option>
-                        <option value="TRADISI">TRADISI</option>
-                        <option value="BERITA">BERITA</option>
-                    </select>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <select class="form-control" name="category" id="category-select" style="flex: 1;">
+                            <option value="EKONOMI">EKONOMI</option>
+                            <option value="BUDAYA">BUDAYA</option>
+                            <option value="TRADISI">TRADISI</option>
+                            <option value="BERITA">BERITA</option>
+                            <option value="custom">+ Tambah Baru</option>
+                        </select>
+                        <input type="text" id="custom-category" class="form-control" placeholder="Kategori Baru" style="display: none; flex: 1;">
+                    </div>
                 </div>
             </div>
 
@@ -58,10 +62,30 @@ export const render = () => `
 
 export const init = () => {
     const form = document.getElementById('blog-form');
+    const categorySelect = document.getElementById('category-select');
+    const customCategoryInput = document.getElementById('custom-category');
+
+    // Toggle custom category input
+    categorySelect.addEventListener('change', (e) => {
+        if (e.target.value === 'custom') {
+            customCategoryInput.style.display = 'block';
+            customCategoryInput.required = true;
+            customCategoryInput.focus();
+        } else {
+            customCategoryInput.style.display = 'none';
+            customCategoryInput.required = false;
+        }
+    });
+
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
+
+        // Use custom category if provided
+        if (data.category === 'custom') {
+            data.category = customCategoryInput.value.toUpperCase();
+        }
 
         // Automate <p> tags for content
         if (data.content) {
