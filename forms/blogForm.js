@@ -47,8 +47,8 @@ export const render = () => `
             </div>
             
             <div class="form-group">
-                <label>Konten Lengkap (HTML)</label>
-                <textarea class="form-control" name="content" placeholder="<p>Tuliskan isi blog lengkap dengan tag HTML jika perlu...</p>" style="min-height: 200px;" required></textarea>
+                <label>Konten Lengkap</label>
+                <textarea class="form-control" name="content" placeholder="Ketik isi blog di sini. Setiap baris baru akan otomatis menjadi paragraf <p>..." style="min-height: 200px;" required></textarea>
             </div>
             
             <button type="submit" class="btn-primary">Publikasikan Blog</button>
@@ -62,8 +62,18 @@ export const init = () => {
         e.preventDefault();
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
-        console.log('Blog Data Collected:', data);
-        alert('Blog berhasil disimpan! Data telah dicetak ke console (F12).');
+
+        // Automate <p> tags for content
+        if (data.content) {
+            data.content = data.content
+                .split('\n')
+                .filter(line => line.trim() !== '')
+                .map(line => `<p>${line.trim()}</p>`)
+                .join('\n');
+        }
+
+        console.log('Blog Data Collected (Processed):', data);
+        alert('Blog berhasil disimpan! Konten telah otomatis diubah menjadi HTML Paragraf. Lihat Console (F12).');
         form.reset();
     });
 };
