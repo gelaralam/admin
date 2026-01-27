@@ -41,8 +41,19 @@ export const render = () => `
             </div>
             
             <div class="form-group">
-                <label>Gambar (Path)</label>
-                <input type="text" class="form-control" name="image" placeholder="assets/blog/blog-1.jpg" required>
+                <label>Gambar Blog</label>
+                <div class="image-upload-wrapper" style="border: 2px dashed var(--border-color); border-radius: 12px; padding: 1.5rem; text-align: center; cursor: pointer; transition: all 0.3s; position: relative;">
+                    <input type="file" class="form-control" name="image_file" id="image-input" accept="image/*" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
+                    <div id="image-preview-container" style="display: none; margin-bottom: 1rem;">
+                        <img id="image-preview" src="#" alt="Preview" style="max-width: 100%; max-height: 200px; border-radius: 8px;">
+                    </div>
+                    <div id="image-upload-placeholder">
+                        <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 0.5rem; display: block;"></i>
+                        <p style="margin: 0; color: var(--text-secondary);">Klik atau seret gambar ke sini</p>
+                        <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 5px;">Format: JPG, PNG, WEBP (Maks 2MB)</p>
+                    </div>
+                </div>
+                <input type="hidden" name="image" id="image-path-hidden" value="assets/blog/default.jpg">
             </div>
 
             <div class="form-group">
@@ -64,6 +75,27 @@ export const init = () => {
     const form = document.getElementById('blog-form');
     const categorySelect = document.getElementById('category-select');
     const customCategoryInput = document.getElementById('custom-category');
+    const imageInput = document.getElementById('image-input');
+    const imagePreviewContainer = document.getElementById('image-preview-container');
+    const imagePreview = document.getElementById('image-preview');
+    const imagePlaceholder = document.getElementById('image-upload-placeholder');
+    const imagePathHidden = document.getElementById('image-path-hidden');
+
+    // Handle image preview
+    imageInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                imagePreview.src = event.target.result;
+                imagePreviewContainer.style.display = 'block';
+                imagePlaceholder.style.display = 'none';
+                // Simulate path for demonstration
+                imagePathHidden.value = `assets/blog/${file.name}`;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 
     // Toggle custom category input
     categorySelect.addEventListener('change', (e) => {
