@@ -50,7 +50,7 @@ export const render = () => `
                     <div id="image-upload-placeholder">
                         <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 0.5rem; display: block;"></i>
                         <p style="margin: 0; color: var(--text-secondary);">Klik atau seret gambar ke sini</p>
-                        <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 5px;">Format: JPG, PNG, WEBP (Maks 2MB)</p>
+                        <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 5px;">Format: JPG, PNG, WEBP (Maks 1MB)</p>
                     </div>
                 </div>
                 <input type="hidden" name="image" id="image-path-hidden" value="assets/blog/default.jpg">
@@ -85,6 +85,13 @@ export const init = () => {
     imageInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
+            // Validation: Max 1MB
+            if (file.size > 1024 * 1024) {
+                alert('Ukuran file terlalu besar! Maksimal 1MB.');
+                imageInput.value = '';
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = (event) => {
                 imagePreview.src = event.target.result;

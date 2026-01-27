@@ -11,7 +11,17 @@ export const render = () => `
             
             <div class="form-group">
                 <label>Pilih File</label>
-                <input type="file" class="form-control" name="media_file" accept="image/*,video/*" required>
+                <div class="image-upload-wrapper" style="border: 2px dashed var(--border-color); border-radius: 12px; padding: 1.5rem; text-align: center; cursor: pointer; transition: all 0.3s; position: relative;">
+                    <input type="file" class="form-control" name="media_file" id="galeri-image-input" accept="image/*,video/*" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;" required>
+                    <div id="galeri-preview-container" style="display: none; margin-bottom: 1rem;">
+                        <img id="galeri-preview" src="#" alt="Preview" style="max-width: 100%; max-height: 200px; border-radius: 8px;">
+                    </div>
+                    <div id="galeri-upload-placeholder">
+                        <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 0.5rem; display: block;"></i>
+                        <p style="margin: 0; color: var(--text-secondary);">Klik atau seret file ke sini</p>
+                        <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 5px;">Format: JPG, PNG, MP4 (Maks 1MB)</p>
+                    </div>
+                </div>
             </div>
             
             <div class="form-group">
@@ -42,6 +52,37 @@ export const init = () => {
     const form = document.getElementById('galeri-form');
     const categorySelect = document.getElementById('galeri-category-select');
     const customCategoryInput = document.getElementById('galeri-custom-category');
+    const imageInput = document.getElementById('galeri-image-input');
+    const previewContainer = document.getElementById('galeri-preview-container');
+    const preview = document.getElementById('galeri-preview');
+    const placeholder = document.getElementById('galeri-upload-placeholder');
+
+    // Handle image preview & validation
+    imageInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            if (file.size > 1024 * 1024) {
+                alert('Ukuran file terlalu besar! Maksimal 1MB.');
+                imageInput.value = '';
+                return;
+            }
+
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    preview.src = event.target.result;
+                    previewContainer.style.display = 'block';
+                    placeholder.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // For video, just show placeholder or generic icon
+                previewContainer.style.display = 'none';
+                placeholder.style.display = 'block';
+                placeholder.querySelector('p').innerText = `File terpilih: ${file.name}`;
+            }
+        }
+    });
 
     // Toggle custom category input
     categorySelect.addEventListener('change', (e) => {
