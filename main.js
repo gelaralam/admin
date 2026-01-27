@@ -2,34 +2,23 @@ import Router from './router.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     // Session Check
+    const token = localStorage.getItem('paseto_token');
     const savedUser = localStorage.getItem('admin_user');
-    if (!savedUser) {
+
+    if (!token || !savedUser) {
         window.location.href = 'login.html';
         return;
     }
 
     const userData = JSON.parse(savedUser);
-
-    // Secondary Verification (Check if still authorized in admin.json)
-    try {
-        const resp = await fetch('admin.json');
-        const authorizedEmails = await resp.json();
-        if (!authorizedEmails.includes(userData.email)) {
-            localStorage.removeItem('admin_user');
-            window.location.href = 'login.html';
-            return;
-        }
-    } catch (e) {
-        console.warn('Could not verify against admin.json, relying on local session.');
-    }
     const contentArea = document.getElementById('content-area');
     const pageTitle = document.getElementById('current-page-title');
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.getElementById('toggle-sidebar');
 
     // Update Profile UI
-    document.getElementById('user-name').innerText = userData.name;
-    document.getElementById('user-avatar').innerHTML = `<img src="${userData.picture}" alt="${userData.name}">`;
+    document.getElementById('user-name').innerText = userData.email;
+    document.getElementById('user-avatar').innerText = userData.email.charAt(0).toUpperCase();
 
     // Initialize Router
     const router = new Router(contentArea, pageTitle);
@@ -49,10 +38,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         sidebar.classList.toggle('open');
     });
 
-    // Logout simulation
+    // Logout
     document.getElementById('logout-btn').addEventListener('click', () => {
         if (confirm('Apakah Anda yakin ingin keluar?')) {
             localStorage.removeItem('admin_user');
+            localStorage.removeItem('paseto_token');
             location.reload();
         }
     });

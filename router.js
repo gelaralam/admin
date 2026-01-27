@@ -15,6 +15,10 @@ export default class Router {
                     module = await import('./forms/blogForm.js');
                     this.titleElement.innerText = 'Input BLOG';
                     break;
+                case 'budaya':
+                    module = await import('./forms/budayaForm.js');
+                    this.titleElement.innerText = 'Input BUDAYA';
+                    break;
                 case 'jadwal':
                     module = await import('./forms/jadwalForm.js');
                     this.titleElement.innerText = 'Input JADWAL';

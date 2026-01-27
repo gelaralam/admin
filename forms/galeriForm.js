@@ -1,114 +1,161 @@
+import { api } from '../api.js';
+
 export const render = () => `
     <div class="form-card">
-        <h3>Upload ke Galeri</h3>
-        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Tambahkan foto atau video baru ke koleksi galeri budaya.</p>
-        
-        <form id="galeri-form">
-            <div class="form-group">
-                <label>Judul Media</label>
-                <input type="text" class="form-control" name="title" placeholder="Masukkan judul foto/video" required>
+        <div class="card-header">
+            <h3>Manajemen Galeri</h3>
+            <div class="header-actions">
+                <button id="btn-list-view" class="btn-secondary active">Daftar Foto</button>
+                <button id="btn-add-view" class="btn-primary">Tambah Baru</button>
             </div>
-            
-            <div class="form-group">
-                <label>Pilih File</label>
-                <div class="image-upload-wrapper" style="border: 2px dashed var(--border-color); border-radius: 12px; padding: 1.5rem; text-align: center; cursor: pointer; transition: all 0.3s; position: relative;">
-                    <input type="file" class="form-control" name="media_file" id="galeri-image-input" accept="image/*,video/*" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;" required>
-                    <div id="galeri-preview-container" style="display: none; margin-bottom: 1rem;">
-                        <img id="galeri-preview" src="#" alt="Preview" style="max-width: 100%; max-height: 200px; border-radius: 8px;">
-                    </div>
-                    <div id="galeri-upload-placeholder">
-                        <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 0.5rem; display: block;"></i>
-                        <p style="margin: 0; color: var(--text-secondary);">Klik atau seret file ke sini</p>
-                        <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 5px;">Format: JPG, PNG, MP4 (Maks 1MB)</p>
+        </div>
+
+        <div id="item-list-container" class="view-container">
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Preview</th>
+                            <th>Judul</th>
+                            <th>Kategori</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="item-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="item-form-container" class="view-container" style="display: none;">
+            <form id="item-form">
+                <input type="hidden" name="id" id="item-id">
+                <div class="form-group">
+                    <label>Judul Foto</label>
+                    <input type="text" class="form-control" name="title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Gambar</label>
+                    <div class="image-upload-wrapper" style="border: 2px dashed var(--border-color); border-radius: 12px; padding: 1.5rem; text-align: center; cursor: pointer; position: relative;">
+                        <input type="file" id="image-input" accept="image/*" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
+                        <input type="hidden" name="image" id="image-path">
+                        <div id="preview-container" style="display: none; margin-bottom: 1rem;">
+                            <img id="preview-img" src="#" alt="Preview" style="max-width: 100%; max-height: 200px; border-radius: 8px;">
+                        </div>
+                        <div id="placeholder">
+                            <i class="fas fa-images" style="font-size: 2rem; color: var(--primary-color);"></i>
+                            <p>Klik untuk upload foto</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="form-group">
-                <label>Kategori Galeri</label>
-                <div style="display: flex; gap: 0.5rem;">
-                    <select class="form-control" name="category" id="galeri-category-select" style="flex: 1;">
-                        <option value="ritual">Ritual Adat</option>
-                        <option value="arsitektur">Arsitektur</option>
-                        <option value="kegiatan">Kegiatan Warga</option>
-                        <option value="alam">Pemandangan Alam</option>
-                        <option value="custom">+ Tambah Baru</option>
-                    </select>
-                    <input type="text" id="galeri-custom-category" class="form-control" placeholder="Kategori Baru" style="display: none; flex: 1;">
+
+                <div class="form-group">
+                    <label>Kategori</label>
+                    <input type="text" class="form-control" name="category" placeholder="Contoh: Upacara Adat" required>
                 </div>
-            </div>
-            
-            <div class="form-group">
-                <label>Deskripsi Singkat</label>
-                <textarea class="form-control" name="description" placeholder="Ceritakan sedikit tentang media ini..."></textarea>
-            </div>
-            
-            <button type="submit" class="btn-primary">Upload ke Galeri</button>
-        </form>
+                
+                <div class="form-actions">
+                    <button type="button" id="btn-cancel" class="btn-secondary">Batal</button>
+                    <button type="submit" class="btn-primary" id="btn-submit">Simpan ke Galeri</button>
+                </div>
+            </form>
+        </div>
     </div>
 `;
 
-export const init = () => {
-    const form = document.getElementById('galeri-form');
-    const categorySelect = document.getElementById('galeri-category-select');
-    const customCategoryInput = document.getElementById('galeri-custom-category');
-    const imageInput = document.getElementById('galeri-image-input');
-    const previewContainer = document.getElementById('galeri-preview-container');
-    const preview = document.getElementById('galeri-preview');
-    const placeholder = document.getElementById('galeri-upload-placeholder');
+export const init = async () => {
+    const listView = document.getElementById('item-list-container');
+    const formView = document.getElementById('item-form-container');
+    const tableBody = document.getElementById('item-table-body');
+    const form = document.getElementById('item-form');
+    const btnList = document.getElementById('btn-list-view');
+    const btnAdd = document.getElementById('btn-add-view');
+    const imageInput = document.getElementById('image-input');
+    const imagePath = document.getElementById('image-path');
+    const previewContainer = document.getElementById('preview-container');
+    const previewImg = document.getElementById('preview-img');
+    const placeholder = document.getElementById('placeholder');
 
-    // Handle image preview & validation
-    imageInput.addEventListener('change', (e) => {
+    const loadData = async () => {
+        try {
+            const data = await api.getGallery();
+            tableBody.innerHTML = data.map(item => `
+                <tr>
+                    <td><img src="${item.image}" class="image-preview-sm"></td>
+                    <td class="semi-bold">${item.title}</td>
+                    <td>${item.category}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-icon edit-btn" data-id="${item.id}"><i class="fas fa-edit"></i></button>
+                            <button class="btn-icon delete-btn" data-id="${item.id}"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', () => editItem(data.find(i => i.id === btn.dataset.id)));
+            });
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', () => deleteItem(btn.dataset.id));
+            });
+        } catch (error) {
+            tableBody.innerHTML = '<tr><td colspan="4">Gagal memuat data.</td></tr>';
+        }
+    };
+
+    const editItem = (item) => {
+        form.reset();
+        document.getElementById('item-id').value = item.id;
+        form.querySelector('[name="title"]').value = item.title;
+        form.querySelector('[name="category"]').value = item.category;
+        imagePath.value = item.image;
+        previewImg.src = item.image;
+        previewContainer.style.display = 'block';
+        placeholder.style.display = 'none';
+        showView('form');
+    };
+
+    const deleteItem = async (id) => {
+        if (confirm('Hapus item ini?')) {
+            await api.deleteGallery(id);
+            loadData();
+        }
+    };
+
+    imageInput.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (file) {
-            if (file.size > 1024 * 1024) {
-                alert('Ukuran file terlalu besar! Maksimal 1MB.');
-                imageInput.value = '';
-                return;
-            }
-
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    preview.src = event.target.result;
-                    previewContainer.style.display = 'block';
-                    placeholder.style.display = 'none';
-                };
-                reader.readAsDataURL(file);
-            } else {
-                // For video, just show placeholder or generic icon
-                previewContainer.style.display = 'none';
-                placeholder.style.display = 'block';
-                placeholder.querySelector('p').innerText = `File terpilih: ${file.name}`;
-            }
+            placeholder.innerHTML = 'Uploading...';
+            try {
+                const res = await api.uploadImage(file);
+                imagePath.value = res.url;
+                previewImg.src = res.url;
+                previewContainer.style.display = 'block';
+                placeholder.style.display = 'none';
+            } catch (err) { alert('Upload gagal'); }
         }
     });
 
-    // Toggle custom category input
-    categorySelect.addEventListener('change', (e) => {
-        if (e.target.value === 'custom') {
-            customCategoryInput.style.display = 'block';
-            customCategoryInput.required = true;
-            customCategoryInput.focus();
-        } else {
-            customCategoryInput.style.display = 'none';
-            customCategoryInput.required = false;
-        }
-    });
-
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
-
-        // Use custom category if provided
-        if (data.category === 'custom') {
-            data.category = customCategoryInput.value;
-        }
-
-        console.log('Galeri Data Collected:', data);
-        alert('Media berhasil diupload ke galeri! (Simulated)');
-        form.reset();
-        customCategoryInput.style.display = 'none';
+        const data = Object.fromEntries(new FormData(form).entries());
+        const id = data.id; delete data.id;
+        if (id) await api.updateGallery(id, data);
+        else await api.createGallery(data);
+        showView('list'); loadData();
     });
+
+    const showView = (v) => {
+        listView.style.display = v === 'list' ? 'block' : 'none';
+        formView.style.display = v === 'form' ? 'block' : 'none';
+        btnList.classList.toggle('active', v === 'list');
+        btnAdd.classList.toggle('active', v === 'form');
+    };
+
+    btnList.addEventListener('click', () => showView('list'));
+    btnAdd.addEventListener('click', () => { form.reset(); showView('form'); });
+    document.getElementById('btn-cancel').addEventListener('click', () => showView('list'));
+
+    loadData();
 };
