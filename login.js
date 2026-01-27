@@ -32,7 +32,7 @@ window.handleCredentialResponse = async (response) => {
 
 window.onload = function () {
     // Check if already logged in
-    if (localStorage.getItem('admin_user')) {
+    if (localStorage.getItem('admin_user') && localStorage.getItem('paseto_token')) {
         window.location.href = 'index.html';
         return;
     }
