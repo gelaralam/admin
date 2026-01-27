@@ -56,7 +56,22 @@ body {
 
 .login-card .brand {
     margin-bottom: 1rem;
-    font-size: 2rem;
+    font-size: 1.8rem;
+}
+
+.login-card .brand span {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.login-logo {
+    width: 80px;
+    height: auto;
+    margin-bottom: 1.5rem;
 }
 
 .login-card p {
@@ -103,22 +118,31 @@ h3,
 }
 
 .sidebar-header {
-    padding: 2rem 1.5rem;
+    padding: 1.5rem;
     border-bottom: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.sidebar-logo {
+    width: 60px;
+    height: auto;
+    margin-bottom: 1rem;
 }
 
 .brand {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--primary-color);
+    text-transform: uppercase;
 }
 
 .brand span {
     color: var(--text-primary);
     font-weight: 400;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     display: block;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
+    margin-top: 4px;
 }
 
 .sidebar-nav {
