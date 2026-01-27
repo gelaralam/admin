@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Gelaralam</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1 class="brand">Gelaralam <span>Admin</span></h1>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li data-page="blog">
+                        <a href="#blog">
+                            <i class="fas fa-newspaper"></i>
+                            <span>Blog</span>
+                        </a>
+                    </li>
+                    <li data-page="jadwal">
+                        <a href="#jadwal">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Jadwal</span>
+                        </a>
+                    </li>
+                    <li data-page="galeri">
+                        <a href="#galeri">
+                            <i class="fas fa-images"></i>
+                            <span>Galeri</span>
+                        </a>
+                    </li>
+                    <li data-page="testimoni">
+                        <a href="#testimoni">
+                            <i class="fas fa-quote-left"></i>
+                            <span>Testimoni</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Keluar</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <button id="toggle-sidebar" class="mobile-only">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="page-title">
+                    <h2 id="current-page-title">Dashboard</h2>
+                </div>
+                <div class="user-profile">
+                    <span class="user-name">Administrator</span>
+                    <div class="user-avatar">AD</div>
+                </div>
+            </header>
+            
+            <section id="content-area" class="content-area">
+                <!-- Content will be injected here -->
+                <div class="loader-container">
+                    <div class="loader"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
