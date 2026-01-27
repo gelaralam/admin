@@ -82,9 +82,11 @@ export const init = async () => {
     const loadData = async () => {
         try {
             const data = await api.getBudayas();
-            tableBody.innerHTML = data.map(item => `
+            tableBody.innerHTML = data.map(item => {
+                const imageUrl = item.image.startsWith('http') ? item.image : `../${item.image}`;
+                return `
                 <tr>
-                    <td><img src="${item.image}" style="width: 60px; height: 40px; object-fit: cover; border-radius: 4px;"></td>
+                    <td><img src="${imageUrl}" style="width: 60px; height: 40px; object-fit: cover; border-radius: 4px;"></td>
                     <td class="semi-bold">${item.title}</td>
                     <td class="text-truncate">${item.description}</td>
                     <td>
@@ -94,7 +96,8 @@ export const init = async () => {
                         </div>
                     </td>
                 </tr>
-            `).join('');
+                `;
+            }).join('');
 
             // Attach listeners to dynamically created buttons
             document.querySelectorAll('.edit-btn').forEach(btn => {
@@ -122,7 +125,7 @@ export const init = async () => {
         form.querySelector('[name="title"]').value = item.title;
         form.querySelector('[name="description"]').value = item.description;
         imagePath.value = item.image;
-        preview.src = item.image;
+        preview.src = item.image.startsWith('http') ? item.image : `../${item.image}`;
         previewContainer.style.display = 'block';
         placeholder.style.display = 'none';
 

@@ -94,9 +94,11 @@ export const init = async () => {
     const loadData = async () => {
         try {
             const data = await api.getTestimonials();
-            tableBody.innerHTML = data.map(item => `
+            tableBody.innerHTML = data.map(item => {
+                const imageUrl = item.photo.startsWith('http') ? item.photo : `../${item.photo}`;
+                return `
                 <tr>
-                    <td><img src="${item.photo}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"></td>
+                    <td><img src="${imageUrl}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"></td>
                     <td class="semi-bold">${item.name}</td>
                     <td>${item.origin}</td>
                     <td>
@@ -106,7 +108,8 @@ export const init = async () => {
                         </div>
                     </td>
                 </tr>
-            `).join('');
+                `;
+            }).join('');
 
             document.querySelectorAll('.edit-btn').forEach(btn => {
                 btn.addEventListener('click', () => editItem(data.find(i => i.id === btn.dataset.id)));
@@ -128,7 +131,7 @@ export const init = async () => {
         form.querySelector('[name="stars"]').value = item.stars;
         form.querySelector('[name="content"]').value = item.content;
         imagePath.value = item.photo;
-        previewImg.src = item.photo;
+        previewImg.src = item.photo.startsWith('http') ? item.photo : `../${item.photo}`;
         previewContainer.style.display = 'block';
         placeholder.style.display = 'none';
         showView('form');

@@ -119,9 +119,11 @@ export const init = async () => {
     const loadData = async () => {
         try {
             const data = await api.getBlogs();
-            tableBody.innerHTML = data.map(item => `
+            tableBody.innerHTML = data.map(item => {
+                const imageUrl = item.image.startsWith('http') ? item.image : `../${item.image}`;
+                return `
                 <tr>
-                    <td><img src="${item.image}" class="image-preview-sm"></td>
+                    <td><img src="${imageUrl}" class="image-preview-sm"></td>
                     <td class="semi-bold">${item.title}</td>
                     <td><span class="badge">${item.category}</span></td>
                     <td>${item.day} ${item.month} ${item.year}</td>
@@ -132,7 +134,8 @@ export const init = async () => {
                         </div>
                     </td>
                 </tr>
-            `).join('');
+                `;
+            }).join('');
 
             document.querySelectorAll('.edit-btn').forEach(btn => {
                 btn.addEventListener('click', () => editItem(data.find(i => i.id === btn.dataset.id)));
@@ -170,7 +173,7 @@ export const init = async () => {
         }
 
         imagePathHidden.value = item.image;
-        imagePreview.src = item.image;
+        imagePreview.src = item.image.startsWith('http') ? item.image : `../${item.image}`;
         imagePreviewContainer.style.display = 'block';
         imagePlaceholder.style.display = 'none';
 
