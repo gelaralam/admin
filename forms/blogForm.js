@@ -82,6 +82,11 @@ export const render = () => `
                 </div>
 
                 <div class="form-group">
+                    <label>Link Video YouTube (Opsional)</label>
+                    <input type="url" class="form-control" name="video_url" placeholder="Contoh: https://www.youtube.com/watch?v=...">
+                </div>
+
+                <div class="form-group">
                     <label>Deskripsi Singkat (Snippet)</label>
                     <textarea class="form-control" name="description" placeholder="Ringkasan singkat untuk kartu blog..." style="min-height: 80px;" required></textarea>
                 </div>
@@ -165,6 +170,7 @@ export const init = async () => {
         form.querySelector('[name="day"]').value = item.day;
         form.querySelector('[name="month"]').value = item.month;
         form.querySelector('[name="year"]').value = item.year;
+        form.querySelector('[name="video_url"]').value = item.video_url || '';
 
         categorySelect.value = ['EKONOMI', 'BUDAYA', 'TRADISI', 'BERITA'].includes(item.category) ? item.category : 'custom';
         if (categorySelect.value === 'custom') {
