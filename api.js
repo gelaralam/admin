@@ -21,12 +21,28 @@ export const api = {
             headers,
         });
 
+        const text = await response.text();
+
         if (!response.ok) {
-            const error = await response.json().catch(() => ({ message: 'An error occurred' }));
-            throw new Error(error.message || `HTTP error! status: ${response.status}`);
+            let errorMessage = 'An error occurred';
+            try {
+                if (text) {
+                    const error = JSON.parse(text);
+                    errorMessage = error.message || error.error || text;
+                }
+            } catch (e) {
+                errorMessage = text || errorMessage;
+            }
+            throw new Error(errorMessage);
         }
 
-        return response.json();
+        if (response.status === 204 || !text) return null;
+
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            return text;
+        }
     },
 
     async uploadImage(file) {
@@ -42,12 +58,26 @@ export const api = {
             body: formData,
         });
 
+        const text = await response.text();
+
         if (!response.ok) {
-            const error = await response.json().catch(() => ({ message: 'Upload failed' }));
-            throw new Error(error.message || 'Upload failed');
+            let errorMessage = 'Upload failed';
+            try {
+                if (text) {
+                    const error = JSON.parse(text);
+                    errorMessage = error.message || error.error || text;
+                }
+            } catch (e) {
+                errorMessage = text || errorMessage;
+            }
+            throw new Error(errorMessage);
         }
 
-        return response.json();
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            return text;
+        }
     },
 
     // Auth

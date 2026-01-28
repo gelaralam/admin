@@ -52,6 +52,11 @@ export const render = () => `
                 </div>
 
                 <div class="form-group">
+                    <label>Link Video YouTube (Opsional)</label>
+                    <input type="url" class="form-control" name="video_url" placeholder="Contoh: https://www.youtube.com/watch?v=...">
+                </div>
+
+                <div class="form-group">
                     <label>Deskripsi Ritual</label>
                     <textarea class="form-control" name="description" placeholder="Ceritakan tentang ritual ini..." style="min-height: 120px;" required></textarea>
                 </div>
@@ -124,6 +129,7 @@ export const init = async () => {
         document.getElementById('budaya-id').value = item.id;
         form.querySelector('[name="title"]').value = item.title;
         form.querySelector('[name="description"]').value = item.description;
+        form.querySelector('[name="video_url"]').value = item.video_url || '';
         imagePath.value = item.image;
         preview.src = item.image.startsWith('http') ? item.image : `../${item.image}`;
         previewContainer.style.display = 'block';

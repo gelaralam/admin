@@ -53,6 +53,11 @@ export const render = () => `
                     <label>Kategori</label>
                     <input type="text" class="form-control" name="category" placeholder="Contoh: Upacara Adat" required>
                 </div>
+
+                <div class="form-group">
+                    <label>Link Video YouTube (Opsional)</label>
+                    <input type="url" class="form-control" name="video_url" placeholder="Contoh: https://www.youtube.com/watch?v=...">
+                </div>
                 
                 <div class="form-actions">
                     <button type="button" id="btn-cancel" class="btn-secondary">Batal</button>
@@ -112,6 +117,7 @@ export const init = async () => {
         document.getElementById('item-id').value = item.id;
         form.querySelector('[name="title"]').value = item.title;
         form.querySelector('[name="category"]').value = item.category;
+        form.querySelector('[name="video_url"]').value = item.video_url || '';
         imagePath.value = item.image;
         previewImg.src = item.image.startsWith('http') ? item.image : `../${item.image}`;
         previewContainer.style.display = 'block';
