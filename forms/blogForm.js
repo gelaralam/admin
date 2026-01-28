@@ -105,6 +105,12 @@ export const render = () => `
     </div>
 `;
 
+const getImageUrl = (path) => {
+    if (!path) return 'assets/logo.png';
+    if (path.startsWith('http')) return path;
+    return `../${path}`;
+};
+
 export const init = async () => {
     const listView = document.getElementById('blog-list-container');
     const formView = document.getElementById('blog-form-container');
@@ -125,10 +131,9 @@ export const init = async () => {
         try {
             const data = await api.getBlogs();
             tableBody.innerHTML = data.map(item => {
-                const imageUrl = item.image.startsWith('http') ? item.image : `../${item.image}`;
                 return `
                 <tr>
-                    <td><img src="${imageUrl}" class="image-preview-sm"></td>
+                    <td><img src="${getImageUrl(item.image)}" class="image-preview-sm" onerror="this.src='../assets/logo.png'"></td>
                     <td class="semi-bold">${item.title}</td>
                     <td><span class="badge">${item.category}</span></td>
                     <td>${item.day} ${item.month} ${item.year}</td>
@@ -179,7 +184,8 @@ export const init = async () => {
         }
 
         imagePathHidden.value = item.image;
-        imagePreview.src = item.image.startsWith('http') ? item.image : `../${item.image}`;
+        imagePreview.src = getImageUrl(item.image);
+        imagePreview.onerror = () => { imagePreview.src = '../assets/logo.png'; };
         imagePreviewContainer.style.display = 'block';
         imagePlaceholder.style.display = 'none';
 
