@@ -118,7 +118,8 @@ export const init = async () => {
             });
         } catch (error) {
             console.error('Failed to load budaya:', error);
-            tableBody.innerHTML = '<tr><td colspan="4" class="text-center">Gagal memuat data.</td></tr>';
+            console.error('Error message:', error.message);
+            tableBody.innerHTML = `<tr><td colspan="4" class="text-center" style="color: var(--danger-color);">Gagal memuat data: ${error.message}</td></tr>`;
         }
     };
 

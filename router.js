@@ -31,6 +31,10 @@ export default class Router {
                     module = await import('./forms/testimoniForm.js');
                     this.titleElement.innerText = 'Input TESTIMONI';
                     break;
+                case 'diagnostic':
+                    module = await import('./forms/diagnosticForm.js');
+                    this.titleElement.innerText = '🔧 Diagnostic Tool';
+                    break;
                 default:
                     module = await import('./forms/blogForm.js');
                     this.titleElement.innerText = 'Input BLOG';

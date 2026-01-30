@@ -118,7 +118,9 @@ export const init = async () => {
                 btn.addEventListener('click', () => deleteItem(btn.dataset.id));
             });
         } catch (error) {
-            tableBody.innerHTML = '<tr><td colspan="4">Gagal memuat data.</td></tr>';
+            console.error('Failed to load testimonials:', error);
+            console.error('Error message:', error.message);
+            tableBody.innerHTML = `<tr><td colspan="4" class="text-center" style="color: var(--danger-color);">Gagal memuat data: ${error.message}</td></tr>`;
         }
     };
 
