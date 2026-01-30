@@ -33,6 +33,17 @@ export const api = {
             } catch (e) {
                 errorMessage = text || errorMessage;
             }
+
+            // Check if token expired
+            if (response.status === 401 || errorMessage.toLowerCase().includes('token') && (errorMessage.toLowerCase().includes('expired') || errorMessage.toLowerCase().includes('invalid'))) {
+                console.error('Token expired or invalid. Redirecting to login...');
+                localStorage.removeItem('paseto_token');
+                localStorage.removeItem('admin_user');
+                alert('Sesi Anda telah berakhir. Silakan login kembali.');
+                window.location.href = 'login.html';
+                return;
+            }
+
             throw new Error(errorMessage);
         }
 
