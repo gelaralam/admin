@@ -64,6 +64,11 @@ export const render = () => `
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label>Isi Testimoni</label>
+                    <textarea class="form-control" name="content" required></textarea>
+                </div>
+
                 <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin: 1rem 0;">
                     <input type="checkbox" id="item-approved" name="approved" style="width: 20px; height: 20px; cursor: pointer;">
                     <label for="item-approved" style="margin-bottom: 0; cursor: pointer;">Status Approval (Tampil di Website)</label>
