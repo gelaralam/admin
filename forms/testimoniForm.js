@@ -64,11 +64,11 @@ export const render = () => `
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Isi Testimoni</label>
-                    <textarea class="form-control" name="content" required></textarea>
+                <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin: 1rem 0;">
+                    <input type="checkbox" id="item-approved" name="approved" style="width: 20px; height: 20px; cursor: pointer;">
+                    <label for="item-approved" style="margin-bottom: 0; cursor: pointer;">Status Approval (Tampil di Website)</label>
                 </div>
-                
+
                 <div class="form-actions">
                     <button type="button" id="btn-cancel" class="btn-secondary">Batal</button>
                     <button type="submit" class="btn-primary" id="btn-submit">Simpan Testimoni</button>
@@ -96,11 +96,14 @@ export const init = async () => {
             const data = await api.getTestimonials();
             tableBody.innerHTML = data.map(item => {
                 const imageUrl = item.photo.startsWith('http') ? item.photo : `../${item.photo}`;
+                const statusBadge = item.approved
+                    ? '<span style="background: #e6f7ed; color: #15803d; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem;">Disetujui</span>'
+                    : '<span style="background: #fef2f2; color: #b91c1c; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem;">Tertunda</span>';
                 return `
                 <tr>
                     <td><img src="${imageUrl}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"></td>
                     <td class="semi-bold">${item.name}</td>
-                    <td>${item.origin}</td>
+                    <td>${statusBadge}</td>
                     <td>
                         <div class="action-btns">
                             <button class="btn-icon edit-btn" data-id="${item.id}"><i class="fas fa-edit"></i></button>
@@ -132,6 +135,7 @@ export const init = async () => {
         form.querySelector('[name="role"]').value = item.role;
         form.querySelector('[name="stars"]').value = item.stars;
         form.querySelector('[name="content"]').value = item.content;
+        form.querySelector('[name="approved"]').checked = item.approved;
         imagePath.value = item.photo;
         previewImg.src = item.photo.startsWith('http') ? item.photo : `../${item.photo}`;
         previewContainer.style.display = 'block';
@@ -163,6 +167,7 @@ export const init = async () => {
         e.preventDefault();
         const data = Object.fromEntries(new FormData(form).entries());
         data.stars = parseInt(data.stars);
+        data.approved = form.querySelector('[name="approved"]').checked;
         const id = data.id; delete data.id;
         if (id) await api.updateTestimonial(id, data);
         else await api.createTestimonial(data);
