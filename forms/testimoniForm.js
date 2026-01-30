@@ -110,7 +110,7 @@ export const init = async () => {
                     : '<span style="background: #fef2f2; color: #b91c1c; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem;">Tertunda</span>';
                 return `
                 <tr>
-                    <td><img src="${imageUrl}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"></td>
+                    <td><img src="${imageUrl}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(item.name)}&background=random&color=fff'"></td>
                     <td class="semi-bold">${item.name}</td>
                     <td>${statusBadge}</td>
                     <td>
