@@ -94,6 +94,10 @@ export const init = async () => {
     const loadData = async () => {
         try {
             const data = await api.getTestimonials();
+            if (!data || data.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="4" class="text-center">Belum ada testimoni.</td></tr>';
+                return;
+            }
             tableBody.innerHTML = data.map(item => {
                 const imageUrl = item.photo.startsWith('http') ? item.photo : `../${item.photo}`;
                 const statusBadge = item.approved
