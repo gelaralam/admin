@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const pageTitle = document.getElementById('current-page-title');
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.getElementById('toggle-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
 
     // Update Profile UI
     document.getElementById('user-name').innerText = userData.email;
@@ -29,6 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Mobile: close sidebar on selection
             if (window.innerWidth <= 768) {
                 sidebar.classList.remove('open');
+                overlay.classList.remove('active');
             }
         });
     });
@@ -36,6 +38,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Mobile Toggle
     toggleBtn.addEventListener('click', () => {
         sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+    });
+
+    // Close on overlay click
+    overlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
     });
 
     // Logout
