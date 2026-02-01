@@ -134,9 +134,9 @@ export const init = async () => {
                 return `
                 <tr>
                     <td data-label="Gambar"><img src="${getImageUrl(item.image)}" class="image-preview-sm" onerror="this.src='../assets/logo.png'"></td>
-                    <td data-label="Judul" class="semi-bold">${item.title}</td>
-                    <td data-label="Kategori"><span class="badge">${item.category}</span></td>
-                    <td data-label="Tanggal">${item.day} ${item.month} ${item.year}</td>
+                    <td data-label="Judul" class="semi-bold"><span class="cell-value">${item.title}</span></td>
+                    <td data-label="Kategori"><span class="cell-value"><span class="badge">${item.category}</span></span></td>
+                    <td data-label="Tanggal"><span class="cell-value">${item.day} ${item.month} ${item.year}</span></td>
                     <td data-label="Aksi">
                         <div class="action-btns">
                             <button class="btn-icon edit-btn" data-id="${item.id}"><i class="fas fa-edit"></i></button>

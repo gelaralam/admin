@@ -111,8 +111,8 @@ export const init = async () => {
                 return `
                 <tr>
                     <td data-label="Foto"><img src="${imageUrl}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(item.name)}&background=random&color=fff'"></td>
-                    <td data-label="Nama" class="semi-bold">${item.name}</td>
-                    <td data-label="Status">${statusBadge}</td>
+                    <td data-label="Nama" class="semi-bold"><span class="cell-value">${item.name}</span></td>
+                    <td data-label="Status"><span class="cell-value">${statusBadge}</span></td>
                     <td data-label="Aksi">
                         <div class="action-btns">
                             <button class="btn-icon edit-btn" data-id="${item.id}"><i class="fas fa-edit"></i></button>

@@ -598,16 +598,16 @@ textarea.form-control {
     .admin-table td {
         display: flex !important;
         justify-content: space-between !important;
-        align-items: center !important;
-        padding: 0.5rem 0;
+        align-items: flex-start !important;
+        padding: 0.75rem 0;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        font-size: 0.9rem;
-        text-align: right;
+        font-size: 0.95rem;
+        gap: 1rem;
     }
 
     .admin-table td:last-child {
         border-bottom: none;
-        padding-top: 1rem;
+        padding-top: 1.25rem;
         justify-content: center !important;
     }
 
@@ -615,33 +615,42 @@ textarea.form-control {
         content: attr(data-label);
         font-weight: 700;
         color: var(--primary-color);
-        font-size: 0.7rem;
+        font-size: 0.75rem;
         text-transform: uppercase;
-        margin-right: 1rem;
         text-align: left;
-        flex: 0 0 40%;
+        flex: 0 0 35%;
+        letter-spacing: 0.5px;
     }
 
-    .admin-table td>* {
+    .admin-table td .cell-value,
+    .admin-table td>*:not(::before) {
         flex: 1;
         min-width: 0;
+        text-align: right;
+        color: var(--text-primary);
+        white-space: normal !important;
+        word-break: break-word;
+        max-width: none !important;
     }
 
     .action-btns {
         justify-content: center;
-        gap: 1rem;
+        gap: 0.75rem;
+        flex-wrap: wrap;
     }
 
     .image-preview-sm {
-        width: 100px;
-        height: 70px;
+        width: 120px;
+        height: 80px;
         margin-left: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
 
     .btn-icon {
-        width: 44px;
-        height: 44px;
-        font-size: 1.2rem;
+        width: 48px;
+        height: 48px;
+        font-size: 1.25rem;
     }
 }
 
