@@ -96,9 +96,9 @@ export const init = async () => {
             tableBody.innerHTML = data.map(item => {
                 return `
                 <tr>
-                    <td data-label="Gambar"><img src="${getImageUrl(item.image)}" style="width: 60px; height: 40px; object-fit: cover; border-radius: 4px;" onerror="this.src='../assets/logo.png'"></td>
+                    <td data-label="Gambar"><span class="cell-value"><img src="${getImageUrl(item.image)}" class="image-preview-sm" onerror="this.src='../assets/logo.png'"></span></td>
                     <td data-label="Judul" class="semi-bold"><span class="cell-value">${item.title}</span></td>
-                    <td data-label="Deskripsi" class="text-truncate"><span class="cell-value">${item.description}</span></td>
+                    <td data-label="Deskripsi"><span class="cell-value">${item.description}</span></td>
                     <td data-label="Aksi">
                         <div class="action-btns">
                             <button class="btn-icon edit-btn" data-id="${item.id}" title="Edit"><i class="fas fa-edit"></i></button>

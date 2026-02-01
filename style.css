@@ -588,69 +588,89 @@ textarea.form-control {
     }
 
     .admin-table tr {
-        margin-bottom: 1rem;
-        padding: 1rem;
-        background-color: var(--bg-card);
+        margin-bottom: 1.25rem;
+        padding: 1.25rem;
+        background: linear-gradient(145deg, var(--bg-card), rgba(255, 255, 255, 0.02));
         border: 1px solid var(--border-color);
-        border-radius: 12px;
+        border-radius: 16px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
     }
 
     .admin-table td {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: flex-start !important;
-        padding: 0.75rem 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        font-size: 0.95rem;
-        gap: 1rem;
-    }
-
-    .admin-table td:last-child {
-        border-bottom: none;
-        padding-top: 1.25rem;
-        justify-content: center !important;
+        display: block !important;
+        border: none;
+        padding: 0.4rem 0 !important;
+        width: 100% !important;
+        text-align: left !important;
     }
 
     .admin-table td::before {
         content: attr(data-label);
+        display: block;
         font-weight: 700;
         color: var(--primary-color);
-        font-size: 0.75rem;
+        font-size: 0.65rem;
         text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.25rem;
+        opacity: 0.8;
         text-align: left;
-        flex: 0 0 35%;
-        letter-spacing: 0.5px;
     }
 
     .admin-table td .cell-value,
     .admin-table td>*:not(::before) {
-        flex: 1;
-        min-width: 0;
-        text-align: right;
+        display: block;
+        width: 100%;
         color: var(--text-primary);
+        font-size: 0.95rem;
+        line-height: 1.4;
         white-space: normal !important;
         word-break: break-word;
-        max-width: none !important;
+        text-align: left !important;
     }
 
-    .action-btns {
+    /* Exceptions for specific content */
+    .admin-table td[data-label="Gambar"] .cell-value,
+    .admin-table td[data-label="Preview"] .cell-value,
+    .admin-table td[data-label="Foto"] .cell-value {
+        display: flex;
         justify-content: center;
-        gap: 0.75rem;
-        flex-wrap: wrap;
+        padding: 0.5rem 0;
     }
 
     .image-preview-sm {
-        width: 120px;
-        height: 80px;
-        margin-left: auto;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        width: 100% !important;
+        max-width: 240px !important;
+        height: auto !important;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 2px solid var(--border-color);
+        margin: 0 auto;
+    }
+
+    .admin-table td[data-label="Aksi"] {
+        margin-top: 1rem;
+        padding-top: 1rem !important;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .action-btns {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        width: 100%;
     }
 
     .btn-icon {
-        width: 48px;
-        height: 48px;
-        font-size: 1.25rem;
+        width: 52px;
+        height: 52px;
+        font-size: 1.3rem;
+        border-radius: 14px;
+        background-color: rgba(255, 255, 255, 0.05);
     }
 }
 

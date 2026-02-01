@@ -68,7 +68,7 @@ export const init = async () => {
                 <tr>
                     <td data-label="Tanggal" class="semi-bold"><span class="cell-value">${item.date}</span></td>
                     <td data-label="Acara"><span class="cell-value">${item.title}</span></td>
-                    <td data-label="Keterangan" class="text-truncate"><span class="cell-value">${item.description}</span></td>
+                    <td data-label="Keterangan"><span class="cell-value">${item.description}</span></td>
                     <td data-label="Aksi">
                         <div class="action-btns">
                             <button class="btn-icon edit-btn" data-id="${item.id}"><i class="fas fa-edit"></i></button>

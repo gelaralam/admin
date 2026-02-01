@@ -133,7 +133,7 @@ export const init = async () => {
             tableBody.innerHTML = data.map(item => {
                 return `
                 <tr>
-                    <td data-label="Gambar"><img src="${getImageUrl(item.image)}" class="image-preview-sm" onerror="this.src='../assets/logo.png'"></td>
+                    <td data-label="Gambar"><span class="cell-value"><img src="${getImageUrl(item.image)}" class="image-preview-sm" onerror="this.src='../assets/logo.png'"></span></td>
                     <td data-label="Judul" class="semi-bold"><span class="cell-value">${item.title}</span></td>
                     <td data-label="Kategori"><span class="cell-value"><span class="badge">${item.category}</span></span></td>
                     <td data-label="Tanggal"><span class="cell-value">${item.day} ${item.month} ${item.year}</span></td>
