@@ -66,10 +66,10 @@ export const init = async () => {
             const data = await api.getTimelines();
             tableBody.innerHTML = data.map(item => `
                 <tr>
-                    <td class="semi-bold">${item.date}</td>
-                    <td>${item.title}</td>
-                    <td class="text-truncate">${item.description}</td>
-                    <td>
+                    <td data-label="Tanggal" class="semi-bold">${item.date}</td>
+                    <td data-label="Acara">${item.title}</td>
+                    <td data-label="Keterangan" class="text-truncate">${item.description}</td>
+                    <td data-label="Aksi">
                         <div class="action-btns">
                             <button class="btn-icon edit-btn" data-id="${item.id}"><i class="fas fa-edit"></i></button>
                             <button class="btn-icon delete-btn" data-id="${item.id}"><i class="fas fa-trash"></i></button>
