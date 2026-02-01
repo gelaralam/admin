@@ -103,12 +103,14 @@ export const init = async () => {
                 tableBody.innerHTML = '<tr><td colspan="4" class="text-center">Belum ada testimoni.</td></tr>';
                 return;
             }
-            tableBody.innerHTML = data.map(item => {
-                const imageUrl = item.photo.startsWith('http') ? item.photo : `../${item.photo}`;
-                const statusBadge = item.approved
-                    ? '<span style="background: #e6f7ed; color: #15803d; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem;">Disetujui</span>'
-                    : '<span style="background: #fef2f2; color: #b91c1c; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem;">Tertunda</span>';
-                return `
+            tableBody.innerHTML = data
+                .filter(item => item && item.name) // Filter out empty/invalid records
+                .map(item => {
+                    const imageUrl = item.photo.startsWith('http') ? item.photo : `../${item.photo}`;
+                    const statusBadge = item.approved
+                        ? '<span style="background: #e6f7ed; color: #15803d; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem;">Disetujui</span>'
+                        : '<span style="background: #fef2f2; color: #b91c1c; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem;">Tertunda</span>';
+                    return `
                 <tr>
                     <td data-label="Foto"><span class="cell-value"><img src="${imageUrl}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(item.name)}&background=random&color=fff'"></span></td>
                     <td data-label="Nama" class="semi-bold"><span class="cell-value">${item.name}</span></td>
@@ -121,7 +123,7 @@ export const init = async () => {
                     </td>
                 </tr>
                 `;
-            }).join('');
+                }).join('');
 
             document.querySelectorAll('.edit-btn').forEach(btn => {
                 btn.addEventListener('click', () => editItem(data.find(i => i.id === btn.dataset.id)));

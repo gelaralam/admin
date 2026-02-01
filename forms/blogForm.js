@@ -130,8 +130,10 @@ export const init = async () => {
     const loadData = async () => {
         try {
             const data = await api.getBlogs();
-            tableBody.innerHTML = data.map(item => {
-                return `
+            tableBody.innerHTML = data
+                .filter(item => item && (item.title || item.image)) // Filter out empty/invalid records
+                .map(item => {
+                    return `
                 <tr>
                     <td data-label="Gambar"><span class="cell-value"><img src="${getImageUrl(item.image)}" class="image-preview-sm" onerror="this.src='../assets/logo.png'"></span></td>
                     <td data-label="Judul" class="semi-bold"><span class="cell-value">${item.title}</span></td>
@@ -145,7 +147,7 @@ export const init = async () => {
                     </td>
                 </tr>
                 `;
-            }).join('');
+                }).join('');
 
             document.querySelectorAll('.edit-btn').forEach(btn => {
                 btn.addEventListener('click', () => editItem(data.find(i => i.id === btn.dataset.id)));

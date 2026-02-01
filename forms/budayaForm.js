@@ -93,8 +93,10 @@ export const init = async () => {
     const loadData = async () => {
         try {
             const data = await api.getBudayas();
-            tableBody.innerHTML = data.map(item => {
-                return `
+            tableBody.innerHTML = data
+                .filter(item => item && (item.title || item.image))
+                .map(item => {
+                    return `
                 <tr>
                     <td data-label="Gambar"><span class="cell-value"><img src="${getImageUrl(item.image)}" class="image-preview-sm" onerror="this.src='../assets/logo.png'"></span></td>
                     <td data-label="Judul" class="semi-bold"><span class="cell-value">${item.title}</span></td>
@@ -107,7 +109,7 @@ export const init = async () => {
                     </td>
                 </tr>
                 `;
-            }).join('');
+                }).join('');
 
             // Attach listeners to dynamically created buttons
             document.querySelectorAll('.edit-btn').forEach(btn => {

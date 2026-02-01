@@ -64,7 +64,9 @@ export const init = async () => {
     const loadData = async () => {
         try {
             const data = await api.getTimelines();
-            tableBody.innerHTML = data.map(item => `
+            tableBody.innerHTML = data
+                .filter(item => item && item.title)
+                .map(item => `
                 <tr>
                     <td data-label="Tanggal" class="semi-bold"><span class="cell-value">${item.date}</span></td>
                     <td data-label="Acara"><span class="cell-value">${item.title}</span></td>
