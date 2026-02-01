@@ -557,6 +557,24 @@ textarea.form-control {
 }
 
 @media (max-width: 600px) {
+    .main-content {
+        padding: 0.75rem;
+    }
+
+    .form-card {
+        padding: 1rem;
+        border-radius: 12px;
+    }
+
+    .card-header {
+        margin-bottom: 1rem;
+    }
+
+    .header-actions button {
+        padding: 0.6rem 0.4rem;
+        font-size: 0.75rem;
+    }
+
     .admin-table thead {
         display: none;
     }
@@ -571,41 +589,62 @@ textarea.form-control {
 
     .admin-table tr {
         margin-bottom: 1rem;
-        background-color: rgba(255, 255, 255, 0.05);
-        border-radius: 12px;
         padding: 1rem;
+        background-color: var(--bg-card);
         border: 1px solid var(--border-color);
+        border-radius: 12px;
     }
 
     .admin-table td {
-        border: none;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
         padding: 0.5rem 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        font-size: 0.9rem;
         text-align: right;
+    }
+
+    .admin-table td:last-child {
+        border-bottom: none;
+        padding-top: 1rem;
+        justify-content: center !important;
     }
 
     .admin-table td::before {
         content: attr(data-label);
-        font-weight: 600;
-        color: var(--text-secondary);
-        text-align: left;
-        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        font-size: 0.7rem;
         text-transform: uppercase;
+        margin-right: 1rem;
+        text-align: left;
+        flex: 0 0 40%;
     }
 
-    .admin-table td:last-child {
-        border-top: 1px solid var(--border-color);
-        margin-top: 0.5rem;
-        padding-top: 1rem;
+    .admin-table td>* {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .action-btns {
+        justify-content: center;
+        gap: 1rem;
     }
 
     .image-preview-sm {
-        width: 60px;
-        height: 60px;
+        width: 100px;
+        height: 70px;
+        margin-left: auto;
+    }
+
+    .btn-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
     }
 }
+
 
 .action-btns {
     display: flex;
