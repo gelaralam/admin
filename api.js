@@ -1,4 +1,6 @@
-const API_BASE_URL = "https://data.gelaralam.id";
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? "http://localhost:3000"
+    : "https://data.gelaralam.id";
 
 export const api = {
     getToken() {
