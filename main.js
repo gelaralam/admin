@@ -58,12 +58,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Load initial route or hash change
     const handleRoute = () => {
-        const hash = window.location.hash.slice(1) || 'blog';
+        let hash = window.location.hash.slice(1) || 'blog';
+
+        // RBAC: Restrict Kelola Admin
+        if (hash === 'admin' && userData.role !== 'ADMIN' && userData.role !== 'SUPER_ADMIN') {
+            console.warn('Unauthorized access to admin menu');
+            hash = 'blog';
+            window.location.hash = '#blog';
+        }
+
         router.loadRoute(hash);
 
         // Update active class in sidebar
         document.querySelectorAll('.sidebar-nav li').forEach(li => {
             li.classList.toggle('active', li.dataset.page === hash);
+
+            // Hide admin menu for non-admins
+            if (li.dataset.page === 'admin' && userData.role !== 'ADMIN' && userData.role !== 'SUPER_ADMIN') {
+                li.style.display = 'none';
+            }
         });
     };
 

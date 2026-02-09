@@ -36,6 +36,10 @@ export default class Router {
                     this.titleElement.innerText = '🔧 Diagnostic Tool';
                     break;
                 case 'admin':
+                    const userData = JSON.parse(localStorage.getItem('admin_user') || '{}');
+                    if (userData.role !== 'ADMIN' && userData.role !== 'SUPER_ADMIN') {
+                        throw new Error('Akses ditolak: Anda tidak memiliki wewenang.');
+                    }
                     module = await import('./forms/adminForm.js');
                     this.titleElement.innerText = 'Kelola ADMIN';
                     break;
