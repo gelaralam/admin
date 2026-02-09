@@ -134,5 +134,6 @@ export const api = {
     // Admin Management
     getAdmins() { return this.request('/api/user/admins'); },
     createAdmin(data) { return this.request('/api/user/admins', { method: 'POST', body: JSON.stringify(data) }); },
+    updateAdmin(id, data) { return this.request(`/api/user/admins/${id}`, { method: 'PUT', body: JSON.stringify(data) }); },
     deleteAdmin(id) { return this.request(`/api/user/admins/${id}`, { method: 'DELETE' }); },
 };

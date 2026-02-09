@@ -79,18 +79,24 @@ export const init = async () => {
     const btnList = document.getElementById('btn-list-view');
     const btnAdd = document.getElementById('btn-add-view');
     const btnCancel = document.getElementById('btn-cancel-form');
+    const btnSubmit = document.getElementById('btn-submit-form');
+    const cardTitle = document.querySelector('.card-header h3');
+
+    let isEditing = false;
+    let currentId = null;
+    let adminData = [];
 
     const loadData = async () => {
         try {
             const response = await api.getAdmins();
-            const data = response.admins || [];
+            adminData = response.admins || [];
 
-            if (data.length === 0) {
+            if (adminData.length === 0) {
                 tableBody.innerHTML = '<tr><td colspan="5" class="text-center">Belum ada email admin terdaftar.</td></tr>';
                 return;
             }
 
-            tableBody.innerHTML = data.map(item => `
+            tableBody.innerHTML = adminData.map(item => `
                 <tr>
                     <td data-label="Email" class="semi-bold"><span class="cell-value">${item.email}</span></td>
                     <td data-label="Nama"><span class="cell-value">${item.name || '-'}</span></td>
@@ -98,6 +104,9 @@ export const init = async () => {
                     <td data-label="Role"><span class="cell-value"><span class="badge ${item.role === 'SUPER_ADMIN' ? 'badge-primary' : ''}">${item.role}</span></span></td>
                     <td data-label="Aksi">
                         <div class="action-btns">
+                            <button class="btn-icon edit-btn" data-id="${item.id}" title="Edit Admin">
+                                <i class="fas fa-edit"></i>
+                            </button>
                             <button class="btn-icon delete-btn" data-id="${item.id}" title="Hapus dari Whitelist">
                                 <i class="fas fa-trash"></i>
                             </button>
@@ -108,6 +117,10 @@ export const init = async () => {
 
             document.querySelectorAll('.delete-btn').forEach(btn => {
                 btn.addEventListener('click', () => deleteItem(btn.dataset.id));
+            });
+
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', () => editItem(btn.dataset.id));
             });
         } catch (error) {
             console.error('Failed to load admins:', error);
@@ -120,6 +133,29 @@ export const init = async () => {
         formView.style.display = view === 'form' ? 'block' : 'none';
         btnList.classList.toggle('active', view === 'list');
         btnAdd.classList.toggle('active', view === 'form');
+
+        if (view === 'list') {
+            cardTitle.textContent = 'Manajemen Akses Admin';
+        }
+    };
+
+    const editItem = (id) => {
+        const item = adminData.find(a => a.id === id);
+        if (!item) return;
+
+        isEditing = true;
+        currentId = id;
+
+        // Fill form
+        form.email.value = item.email || '';
+        form.name.value = item.name || '';
+        form.phone_number.value = item.phone_number || '';
+        form.role.value = item.role || 'ADMIN';
+        form.notes.value = item.notes || '';
+
+        cardTitle.textContent = 'Edit Akses Admin';
+        btnSubmit.textContent = 'Simpan Perubahan';
+        showView('form');
     };
 
     const deleteItem = async (id) => {
@@ -139,18 +175,26 @@ export const init = async () => {
         const data = Object.fromEntries(formData.entries());
 
         try {
-            await api.createAdmin(data);
+            if (isEditing) {
+                await api.updateAdmin(currentId, data);
+            } else {
+                await api.createAdmin(data);
+            }
             form.reset();
             showView('list');
             loadData();
         } catch (error) {
-            alert('Gagal menambahkan: ' + error.message);
+            alert(`Gagal ${isEditing ? 'memperbarui' : 'menambahkan'}: ` + error.message);
         }
     });
 
     btnList.addEventListener('click', () => showView('list'));
     btnAdd.addEventListener('click', () => {
+        isEditing = false;
+        currentId = null;
         form.reset();
+        cardTitle.textContent = 'Tambah Akses Admin';
+        btnSubmit.textContent = 'Tambah ke Whitelist';
         showView('form');
     });
     btnCancel.addEventListener('click', () => showView('list'));
