@@ -128,4 +128,9 @@ export const api = {
     createTimeline(data) { return this.request('/api/timeline/', { method: 'POST', body: JSON.stringify(data) }); },
     updateTimeline(id, data) { return this.request(`/api/timeline/${id}`, { method: 'PUT', body: JSON.stringify(data) }); },
     deleteTimeline(id) { return this.request(`/api/timeline/${id}`, { method: 'DELETE' }); },
+
+    // Admin Management
+    getAdmins() { return this.request('/api/user/admins'); },
+    createAdmin(data) { return this.request('/api/user/admins', { method: 'POST', body: JSON.stringify(data) }); },
+    deleteAdmin(id) { return this.request(`/api/user/admins/${id}`, { method: 'DELETE' }); },
 };

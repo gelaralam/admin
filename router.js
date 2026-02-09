@@ -35,6 +35,10 @@ export default class Router {
                     module = await import('./forms/diagnosticForm.js');
                     this.titleElement.innerText = '🔧 Diagnostic Tool';
                     break;
+                case 'admin':
+                    module = await import('./forms/adminForm.js');
+                    this.titleElement.innerText = 'Kelola ADMIN';
+                    break;
                 default:
                     module = await import('./forms/blogForm.js');
                     this.titleElement.innerText = 'Input BLOG';

@@ -749,6 +749,11 @@ textarea.form-control {
     color: var(--accent-color);
 }
 
+.badge-primary {
+    background-color: rgba(255, 215, 0, 0.1);
+    color: var(--primary-color);
+}
+
 .text-center {
     text-align: center;
 }
