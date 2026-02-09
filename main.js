@@ -61,7 +61,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         let hash = window.location.hash.slice(1) || 'blog';
 
         // RBAC: Restrict Kelola Admin
-        if (hash === 'admin' && userData.role !== 'ADMIN' && userData.role !== 'SUPER_ADMIN') {
+        const userRole = (userData.role || '').toUpperCase();
+        if (hash === 'admin' && userRole !== 'ADMIN' && userRole !== 'SUPER_ADMIN') {
             console.warn('Unauthorized access to admin menu');
             hash = 'blog';
             window.location.hash = '#blog';
@@ -74,7 +75,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             li.classList.toggle('active', li.dataset.page === hash);
 
             // Hide admin menu for non-admins
-            if (li.dataset.page === 'admin' && userData.role !== 'ADMIN' && userData.role !== 'SUPER_ADMIN') {
+            const userRole = (userData.role || '').toUpperCase();
+            if (li.dataset.page === 'admin' && userRole !== 'ADMIN' && userRole !== 'SUPER_ADMIN') {
                 li.style.display = 'none';
             }
         });

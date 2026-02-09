@@ -55,6 +55,14 @@ export const render = () => `
                                 <td style="padding: 0.5rem 0;" id="browser-info"></td>
                             </tr>
                             <tr>
+                                <td style="padding: 0.5rem 0;"><strong>Current Email:</strong></td>
+                                <td style="padding: 0.5rem 0;" id="user-email-info"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.5rem 0;"><strong>Current Role:</strong></td>
+                                <td style="padding: 0.5rem 0;" id="user-role-info"></td>
+                            </tr>
+                            <tr>
                                 <td style="padding: 0.5rem 0;"><strong>Online Status:</strong></td>
                                 <td style="padding: 0.5rem 0;" id="online-status"></td>
                             </tr>
@@ -96,6 +104,18 @@ export const init = async () => {
 
     // Initialize system info
     browserInfo.textContent = navigator.userAgent.split(' ').slice(-2).join(' ');
+
+    const savedUser = localStorage.getItem('admin_user');
+    if (savedUser) {
+        try {
+            const user = JSON.parse(savedUser);
+            document.getElementById('user-email-info').textContent = user.email || 'N/A';
+            document.getElementById('user-role-info').innerHTML = `<span class="badge ${user.role === 'SUPER_ADMIN' || user.role === 'ADMIN' ? 'badge-primary' : ''}">${user.role || 'N/A'}</span>`;
+        } catch (e) {
+            document.getElementById('user-email-info').textContent = 'Error parsing user';
+        }
+    }
+
     onlineStatus.innerHTML = navigator.onLine
         ? '<span style="color: var(--success-color);">✅ Online</span>'
         : '<span style="color: var(--danger-color);">❌ Offline</span>';

@@ -37,7 +37,8 @@ export default class Router {
                     break;
                 case 'admin':
                     const userData = JSON.parse(localStorage.getItem('admin_user') || '{}');
-                    if (userData.role !== 'ADMIN' && userData.role !== 'SUPER_ADMIN') {
+                    const userRole = (userData.role || '').toUpperCase();
+                    if (userRole !== 'ADMIN' && userRole !== 'SUPER_ADMIN') {
                         throw new Error('Akses ditolak: Anda tidak memiliki wewenang.');
                     }
                     module = await import('./forms/adminForm.js');
